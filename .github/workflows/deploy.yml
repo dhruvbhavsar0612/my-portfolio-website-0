@@ -35,6 +35,11 @@ jobs:
             echo "Pulling latest code..."
             git pull origin main
 
+            # use node 24
+            echo "Using Node.js 24..."
+            source ~/.nvm/nvm.sh
+            nvm use 24
+
             echo "Installing dependencies..."
             npm install --legacy-peer-deps
 

@@ -56,7 +56,7 @@ jobs:
             if pm2 list | grep -q "next-portfolio-app"; then
               pm2 restart next-portfolio-app
             else
-              PORT=3000 pm2 start server.js --name next-portfolio-app
+              PORT=${{ secrets.PORT }} pm2 start server.js --name next-portfolio-app
             fi
             pm2 save
             echo "Deployment finished!"

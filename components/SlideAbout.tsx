@@ -1,8 +1,8 @@
 'use client';
 
 export default function SlideAbout() {
-  const skills = ['Python', 'Rust', 'TypeScript', 'C++', 'FastAPI', 'Next.js', 'PyTorch', 'TensorFlow', 'PostgreSQL', 'Redis', 'Docker', 'AWS Bedrock', 'Apache Airflow', 'Elasticsearch'];
-  const interests = ['Graph Theory', 'LLM Agents', 'Computer Vision', 'Distributed Systems'];
+  const skills = ['Python', 'Rust', 'TypeScript', 'JavaScript', 'SQL', 'FastAPI', 'Next.js', 'PyTorch', 'TensorFlow', 'PostgreSQL', 'Redis', 'MongoDB', 'Docker', 'AWS Bedrock', 'Apache Airflow', 'Elasticsearch', 'OpenAI Agents SDK', 'MCP'];
+  const interests = ['Voice AI', 'LLM Agents', 'Graph Theory', 'MCP', 'Computer Vision', 'Distributed Systems'];
 
   return (
     <div className="w-full h-full flex items-center">
@@ -11,14 +11,14 @@ export default function SlideAbout() {
           <div>
             <h2 className="text-sm font-bold tracking-widest text-[#52525B] dark:text-[#A1A1AA] uppercase mb-6">About</h2>
             <p className="text-lg leading-relaxed text-[#0B0B0C] dark:text-[#F5F5F4]">
-              I bridge the gap between theoretical machine learning and scalable production systems. With experience spanning from research at ISRO to architecting enterprise AI solutions at Wappnet Systems, my engineering philosophy centers on optimizing compute economics and solving high-concurrency constraints.
+              AI Engineer and builder specializing in production agentic pipelines, real-time voice AI, and event-driven ML infrastructure. 2+ years architecting and shipping AI products across healthcare, enterprise automation, and telephony — from research at ISRO to leading AI engineering at Wappnet Systems.
             </p>
           </div>
           
           <div className="space-y-4">
             <div className="flex items-start gap-4">
               <div className="w-24 text-sm text-[#52525B] dark:text-[#A1A1AA]">Focus</div>
-              <div className="flex-1 text-sm">Agentic AI, RAG Architectures, Graph Algorithms</div>
+              <div className="flex-1 text-sm">Agentic AI, Voice AI, RAG Architectures, Graph Algorithms</div>
             </div>
             <div className="flex items-start gap-4">
               <div className="w-24 text-sm text-[#52525B] dark:text-[#A1A1AA]">Location</div>
@@ -28,7 +28,7 @@ export default function SlideAbout() {
               <div className="w-24 text-sm text-[#52525B] dark:text-[#A1A1AA]">Status</div>
               <div className="flex-1 text-sm flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-[#23252A] dark:bg-[#D4D4D8] animate-pulse"></span>
-                AI Engineer at Wappnet Systems
+                SDE 2, AI & Data Science at Wappnet Systems
               </div>
             </div>
           </div>

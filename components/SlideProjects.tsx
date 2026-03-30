@@ -7,12 +7,30 @@ import { ExternalLink, Github } from 'lucide-react';
 const PROJECTS = [
   {
     id: 'teleai',
-    title: 'TeleAI Chat Platform',
-    description: 'An intelligent AI-powered chat assistant serving as a digital chief of staff with seamless integrations across Gmail, Slack, Jira, and Notion.',
-    stack: ['React', 'FastAPI', 'PostgreSQL', 'OpenAI', 'LangChain', 'AWS'],
-    outcome: 'Architected an enterprise workflow automation solution with real-time synchronization.',
-    link: 'https://chat.teleai.tech',
+    title: 'TeleAI Indic',
+    description: 'Asymmetric voice AI platform: humans speak, AI responds in real-time with concise written output only. Built on the HCI principle that speech is faster than typing but reading is faster than listening.',
+    stack: ['Python', 'FastAPI', 'OpenAI Realtime', 'Twilio', 'React'],
+    outcome: 'Live at voice.teleai.tech and chat.teleai.tech with AWS deployment and GitHub Actions CI/CD.',
+    link: 'https://teleai.tech',
     github: 'https://github.com/dhruvbhavsar0612'
+  },
+  {
+    id: 'fastapi-smith',
+    title: 'fastapi-smith',
+    description: 'Production-ready FastAPI project generator with automated versioned releases to PyPI.',
+    stack: ['Python', 'PyPI', 'GitHub Actions'],
+    outcome: 'Open-source CLI tool published on PyPI for scaffolding FastAPI projects with best practices baked in.',
+    link: 'https://pypi.org/project/fastapi-smith/',
+    github: 'https://github.com/dhruvbhavsar0612/fastsql-project-setup'
+  },
+  {
+    id: 'rustlette',
+    title: 'rustlette',
+    description: 'Rust reimplementation of the Starlette ASGI framework achieving a 10% improvement in memory and throughput over the Python baseline via zero-cost async abstractions.',
+    stack: ['Rust'],
+    outcome: '10% improvement in memory footprint and throughput compared to the original Python Starlette framework.',
+    link: '#',
+    github: 'https://github.com/dhruvbhavsar0612/rustlette'
   },
   {
     id: 'maritime-routing',

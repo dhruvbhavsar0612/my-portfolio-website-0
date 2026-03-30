@@ -60,29 +60,29 @@ export default function SlideExperience() {
 
   return (
     <div className="w-full h-full flex flex-col md:flex-row gap-8 py-8">
-      <div className="w-full md:w-1/3 flex flex-col gap-2 border-b md:border-b-0 md:border-r border-[#D4D4D8] dark:border-[#23252A] pb-6 md:pb-0 md:pr-6">
-        <h2 className="text-sm font-bold tracking-widest text-[#52525B] dark:text-[#A1A1AA] uppercase mb-4">Experience</h2>
+      <div className="w-full md:w-1/3 flex flex-row md:flex-col gap-3 md:gap-2 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory md:snap-none md:border-r border-[#D4D4D8] dark:border-[#23252A] pb-4 md:pb-0 md:pr-6 shrink-0">
+        <h2 className="hidden md:block text-sm font-bold tracking-widest text-[#52525B] dark:text-[#A1A1AA] uppercase mb-4">Experience</h2>
         {EXPERIENCES.map((exp, index) => {
           const isActive = index === activeIndex;
           return (
             <button
               key={exp.id}
               onClick={() => setActiveIndex(index)}
-              className={`text-left px-4 py-4 rounded-lg transition-all ${
+              className={`text-left px-4 py-3 md:py-4 rounded-lg transition-all shrink-0 snap-start w-[75vw] md:w-auto ${
                 isActive
                   ? 'bg-white dark:bg-[#111214] border border-[#D4D4D8] dark:border-[#23252A] text-[#0B0B0C] dark:text-[#F5F5F4]'
                   : 'text-[#52525B] dark:text-[#A1A1AA] hover:text-[#0B0B0C] dark:hover:text-[#F5F5F4] hover:bg-white/50 dark:hover:bg-[#111214]/50 border border-transparent'
               }`}
             >
-              <div className="text-xs mb-1 opacity-60">{exp.period}</div>
-              <div className="font-medium">{exp.role}</div>
-              <div className="text-xs mt-1 opacity-70">{exp.company}</div>
+              <div className="text-xs mb-1 opacity-60 whitespace-nowrap">{exp.period}</div>
+              <div className="font-medium whitespace-nowrap">{exp.role}</div>
+              <div className="text-xs mt-1 opacity-70 whitespace-nowrap">{exp.company}</div>
             </button>
           );
         })}
       </div>
 
-      <div className="w-full md:w-2/3 flex flex-col justify-center relative min-h-[400px]">
+      <div className="w-full md:w-2/3 flex flex-col justify-start relative min-h-[400px]">
         <AnimatePresence mode="wait">
           <motion.div
             key={active.id}

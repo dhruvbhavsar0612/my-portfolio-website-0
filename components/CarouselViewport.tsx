@@ -53,7 +53,7 @@ export default function CarouselViewport({ activeIndex, direction, onNavigate }:
             x: { type: 'spring', stiffness: 300, damping: 30 },
             opacity: { duration: 0.2 },
           }}
-          className="absolute inset-0 w-full h-full overflow-y-auto md:overflow-hidden"
+          className="absolute inset-0 w-full h-full overflow-y-auto"
         >
           {slides[activeIndex]}
         </motion.div>

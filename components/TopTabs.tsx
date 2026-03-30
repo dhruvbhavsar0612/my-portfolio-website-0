@@ -1,12 +1,23 @@
 'use client';
 
 import { motion } from 'motion/react';
+import { Home, User, Briefcase, GraduationCap, FolderKanban, Award } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 interface TopTabsProps {
   slides: string[];
   activeIndex: number;
   onSelect: (index: number) => void;
 }
+
+const ICON_MAP: Record<string, LucideIcon> = {
+  Home,
+  About: User,
+  Experience: Briefcase,
+  Education: GraduationCap,
+  Projects: FolderKanban,
+  Certificates: Award,
+};
 
 export default function TopTabs({ slides, activeIndex, onSelect }: TopTabsProps) {
   return (
@@ -17,6 +28,7 @@ export default function TopTabs({ slides, activeIndex, onSelect }: TopTabsProps)
     >
       {slides.map((slide, index) => {
         const isActive = index === activeIndex;
+        const Icon = ICON_MAP[slide];
         return (
           <button
             key={slide}
@@ -35,7 +47,14 @@ export default function TopTabs({ slides, activeIndex, onSelect }: TopTabsProps)
                 transition={{ type: 'spring', stiffness: 400, damping: 30 }}
               />
             )}
-            <span className="relative z-10">{slide}</span>
+            <span className="relative z-10 flex items-center justify-center">
+              {Icon && (
+                <Icon size={16} className={isActive ? 'hidden' : 'md:hidden'} />
+              )}
+              <span className={isActive ? '' : 'hidden md:inline'}>
+                {slide}
+              </span>
+            </span>
           </button>
         );
       })}

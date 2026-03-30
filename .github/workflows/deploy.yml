@@ -52,8 +52,12 @@ jobs:
             source ~/.nvm/nvm.sh
             nvm use 24
             cd ${{ secrets.APP_DIR }}
-            pm2 delete next-portfolio-app 2>/dev/null || true
-            PORT=3000 pm2 start server.js --name next-portfolio-app
+            # check if next-portfolio-app is running
+            if pm2 list | grep -q "next-portfolio-app"; then
+              pm2 restart next-portfolio-app
+            else
+              PORT=3000 pm2 start server.js --name next-portfolio-app
+            fi
             pm2 save
             echo "Deployment finished!"
           EOF

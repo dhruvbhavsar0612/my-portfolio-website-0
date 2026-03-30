@@ -6,13 +6,30 @@ on:
       - main
 
 jobs:
-  deploy:
-    name: Deploy to EC2
+  build-and-deploy:
+    name: Build & Deploy to EC2
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Prepare standalone bundle
+        run: |
+          cp -r public .next/standalone/public
+          cp -r .next/static .next/standalone/.next/static
 
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.9.0
@@ -20,37 +37,23 @@ jobs:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
       - name: Add server to known_hosts
-        run: |
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+        run: ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Deploy on server
+      - name: Deploy to server
+        run: |
+          rsync -azP --delete --exclude '.env*' \
+            .next/standalone/ \
+            ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:${{ secrets.APP_DIR }}/
+
+      - name: Restart application
         run: |
           ssh ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
             set -e
-
-            echo "Starting deployment..."
-
-            cd ${{ secrets.APP_DIR }}
-
-            echo "Pulling latest code..."
-            git pull origin main
-
-            # use node 24
-            echo "Using Node.js 24..."
             source ~/.nvm/nvm.sh
             nvm use 24
-
-            echo "Installing dependencies..."
-            npm install --legacy-peer-deps
-
-            echo "Building app..."
-            npm run build
-
-            echo "Restarting PM2..."
-            pm2 restart next-portfolio-app
-
-            echo "Saving PM2 state..."
+            cd ${{ secrets.APP_DIR }}
+            pm2 delete next-portfolio-app 2>/dev/null || true
+            PORT=3000 pm2 start server.js --name next-portfolio-app
             pm2 save
-
             echo "Deployment finished!"
           EOF

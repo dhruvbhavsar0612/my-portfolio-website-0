@@ -12,7 +12,8 @@ const PROJECTS = [
     stack: ['Python', 'FastAPI', 'OpenAI Realtime', 'Twilio', 'React'],
     outcome: 'Live at voice.teleai.tech and chat.teleai.tech with AWS deployment and GitHub Actions CI/CD.',
     link: 'https://teleai.tech',
-    github: 'https://github.com/dhruvbhavsar0612'
+    github: 'https://github.com/dhruvbhavsar0612',
+    youtube: 'Iuzq0llaz78'
   },
   {
     id: 'fastapi-smith',
@@ -68,29 +69,29 @@ export default function SlideProjects() {
   return (
     <div className="w-full h-full flex flex-col md:flex-row gap-8 py-8">
       {/* Left Rail - Project List */}
-      <div className="w-full md:w-1/3 flex flex-col gap-2 border-b md:border-b-0 md:border-r border-[#D4D4D8] dark:border-[#23252A] pb-6 md:pb-0 md:pr-6">
-        <h2 className="text-sm font-bold tracking-widest text-[#52525B] dark:text-[#A1A1AA] uppercase mb-4">Featured Work</h2>
+      <div className="w-full md:w-1/3 flex flex-row md:flex-col gap-3 md:gap-2 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory md:snap-none md:border-r border-[#D4D4D8] dark:border-[#23252A] pb-4 md:pb-0 md:pr-6 shrink-0">
+        <h2 className="hidden md:block text-sm font-bold tracking-widest text-[#52525B] dark:text-[#A1A1AA] uppercase mb-4">Featured Work</h2>
         {PROJECTS.map((project, index) => {
           const isActive = index === activeProjectIndex;
           return (
             <button
               key={project.id}
               onClick={() => setActiveProjectIndex(index)}
-              className={`text-left px-4 py-4 rounded-lg transition-all ${
+              className={`text-left px-4 py-3 md:py-4 rounded-lg transition-all shrink-0 snap-start w-[75vw] md:w-auto ${
                 isActive 
                   ? 'bg-white dark:bg-[#111214] border border-[#D4D4D8] dark:border-[#23252A] text-[#0B0B0C] dark:text-[#F5F5F4]' 
                   : 'text-[#52525B] dark:text-[#A1A1AA] hover:text-[#0B0B0C] dark:hover:text-[#F5F5F4] hover:bg-white/50 dark:hover:bg-[#111214]/50 border border-transparent'
               }`}
             >
               <div className="text-xs mb-1 opacity-60">0{index + 1}</div>
-              <div className="font-medium">{project.title}</div>
+              <div className="font-medium whitespace-nowrap">{project.title}</div>
             </button>
           );
         })}
       </div>
 
       {/* Main Panel - Project Details */}
-      <div className="w-full md:w-2/3 flex flex-col justify-center relative min-h-[400px]">
+      <div className="w-full md:w-2/3 flex flex-col justify-start relative min-h-[400px]">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeProject.id}
@@ -106,6 +107,19 @@ export default function SlideProjects() {
                 {activeProject.description}
               </p>
             </div>
+
+            {'youtube' in activeProject && activeProject.youtube && (
+              <div className="max-w-lg w-full aspect-video rounded-lg overflow-hidden border border-[#D4D4D8] dark:border-[#23252A]">
+                <iframe
+                  src={`https://www.youtube-nocookie.com/embed/${activeProject.youtube}`}
+                  title={`${activeProject.title} demo`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  loading="lazy"
+                  className="w-full h-full"
+                />
+              </div>
+            )}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 border-t border-[#D4D4D8] dark:border-[#23252A] pt-8">
               <div className="space-y-2">

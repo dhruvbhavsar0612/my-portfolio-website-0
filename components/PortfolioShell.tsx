@@ -5,7 +5,7 @@ import TopTabs from './TopTabs';
 import CarouselViewport from './CarouselViewport';
 import { Github, Linkedin, Mail } from 'lucide-react';
 
-const SLIDES = ['Home', 'About', 'Projects', 'Certificates'];
+const SLIDES = ['Home', 'About', 'Experience', 'Education', 'Projects', 'Certificates'];
 
 export default function PortfolioShell() {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
@@ -47,15 +47,16 @@ export default function PortfolioShell() {
       <div className="flex-1 relative mt-12 mb-8 overflow-hidden">
         <CarouselViewport 
           activeIndex={activeSlideIndex} 
-          direction={direction} 
+          direction={direction}
+          onNavigate={navigateTo}
         />
       </div>
 
       <footer className="flex justify-between items-center text-sm text-[#52525B] dark:text-[#A1A1AA] shrink-0 z-10">
         <div>0{activeSlideIndex + 1} / 0{SLIDES.length}</div>
         <div className="flex gap-4">
-          <a href="#" className="hover:text-[#0B0B0C] dark:hover:text-[#F5F5F4] transition-colors"><Github size={18} /></a>
-          <a href="#" className="hover:text-[#0B0B0C] dark:hover:text-[#F5F5F4] transition-colors"><Linkedin size={18} /></a>
+          <a href="https://github.com/dhruvbhavsar0612" target="_blank" rel="noopener noreferrer" className="hover:text-[#0B0B0C] dark:hover:text-[#F5F5F4] transition-colors"><Github size={18} /></a>
+          <a href="https://linkedin.com/in/dhruv4real" target="_blank" rel="noopener noreferrer" className="hover:text-[#0B0B0C] dark:hover:text-[#F5F5F4] transition-colors"><Linkedin size={18} /></a>
           <a href="mailto:dbhavsar9898@gmail.com" className="hover:text-[#0B0B0C] dark:hover:text-[#F5F5F4] transition-colors"><Mail size={18} /></a>
         </div>
       </footer>

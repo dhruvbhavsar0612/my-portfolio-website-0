@@ -3,12 +3,15 @@
 import { motion, AnimatePresence } from 'motion/react';
 import SlideHome from './SlideHome';
 import SlideAbout from './SlideAbout';
+import SlideExperience from './SlideExperience';
+import SlideEducation from './SlideEducation';
 import SlideProjects from './SlideProjects';
 import SlideCertificates from './SlideCertificates';
 
 interface CarouselViewportProps {
   activeIndex: number;
   direction: number;
+  onNavigate: (index: number) => void;
 }
 
 const variants = {
@@ -26,10 +29,12 @@ const variants = {
   }),
 };
 
-export default function CarouselViewport({ activeIndex, direction }: CarouselViewportProps) {
+export default function CarouselViewport({ activeIndex, direction, onNavigate }: CarouselViewportProps) {
   const slides = [
-    <SlideHome key="home" />,
+    <SlideHome key="home" onNavigate={onNavigate} />,
     <SlideAbout key="about" />,
+    <SlideExperience key="experience" />,
+    <SlideEducation key="education" />,
     <SlideProjects key="projects" />,
     <SlideCertificates key="certificates" />,
   ];

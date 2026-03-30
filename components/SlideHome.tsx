@@ -3,7 +3,11 @@
 import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 
-export default function SlideHome() {
+interface SlideHomeProps {
+  onNavigate: (index: number) => void;
+}
+
+export default function SlideHome({ onNavigate }: SlideHomeProps) {
   return (
     <div className="w-full h-full flex items-center">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full">
@@ -13,15 +17,15 @@ export default function SlideHome() {
               Dhruv<br />Bhavsar
             </h1>
             <p className="text-xl text-[#52525B] dark:text-[#A1A1AA] max-w-md leading-relaxed">
-              AI Systems Engineer & Researcher specializing in Agentic Workflows, Graph Algorithms, and Large-Scale RAG Architectures.
+              AI Engineer specializing in production agentic pipelines, real-time voice AI, and event-driven ML infrastructure.
             </p>
           </div>
           
           <div className="flex flex-wrap gap-4 pt-4">
-            <button className="flex items-center gap-2 bg-[#0B0B0C] dark:bg-[#F5F5F4] text-[#F5F5F4] dark:text-[#0B0B0C] px-6 py-3 rounded-full font-medium hover:bg-[#23252A] dark:hover:bg-[#D4D4D8] transition-colors">
+            <button onClick={() => onNavigate(4)} className="flex items-center gap-2 bg-[#0B0B0C] dark:bg-[#F5F5F4] text-[#F5F5F4] dark:text-[#0B0B0C] px-6 py-3 rounded-full font-medium hover:bg-[#23252A] dark:hover:bg-[#D4D4D8] transition-colors">
               View Projects <ArrowRight size={18} />
             </button>
-            <button className="flex items-center gap-2 bg-white dark:bg-[#111214] border border-[#D4D4D8] dark:border-[#23252A] text-[#0B0B0C] dark:text-[#F5F5F4] px-6 py-3 rounded-full font-medium hover:bg-[#F5F5F4] dark:hover:bg-[#23252A] transition-colors">
+            <button onClick={() => onNavigate(5)} className="flex items-center gap-2 bg-white dark:bg-[#111214] border border-[#D4D4D8] dark:border-[#23252A] text-[#0B0B0C] dark:text-[#F5F5F4] px-6 py-3 rounded-full font-medium hover:bg-[#F5F5F4] dark:hover:bg-[#23252A] transition-colors">
               Certificates
             </button>
           </div>
@@ -33,7 +37,15 @@ export default function SlideHome() {
               src="/hero-graphic.svg" 
               alt="Hero Graphic" 
               fill 
-              className="object-contain"
+              className="object-contain dark:hidden"
+              priority
+              referrerPolicy="no-referrer"
+            />
+            <Image 
+              src="/hero-graphic-dark.svg" 
+              alt="Hero Graphic" 
+              fill 
+              className="object-contain hidden dark:block"
               priority
               referrerPolicy="no-referrer"
             />

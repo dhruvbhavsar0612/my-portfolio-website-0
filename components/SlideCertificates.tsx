@@ -1,6 +1,6 @@
 'use client';
 
-import { FileText, Award, ExternalLink } from 'lucide-react';
+import { FileText, Award, ExternalLink, Download } from 'lucide-react';
 
 const CERTIFICATES = [
   {
@@ -91,10 +91,22 @@ export default function SlideCertificates() {
             </div>
           </div>
 
-          <div className="pt-8 mt-auto">
-            <button className="flex items-center gap-2 bg-[#0B0B0C] dark:bg-[#F5F5F4] text-[#F5F5F4] dark:text-[#0B0B0C] px-6 py-3 rounded-full font-medium hover:bg-[#23252A] dark:hover:bg-[#D4D4D8] transition-colors w-fit">
-              <FileText size={18} /> Download Resume
-            </button>
+          <div className="pt-8 mt-auto flex gap-3">
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-[#0B0B0C] dark:bg-[#F5F5F4] text-[#F5F5F4] dark:text-[#0B0B0C] px-6 py-3 rounded-full font-medium hover:bg-[#23252A] dark:hover:bg-[#D4D4D8] transition-colors w-fit"
+            >
+              <FileText size={18} /> View Resume
+            </a>
+            <a
+              href="/resume.pdf"
+              download="Dhruv_Bhavsar_Resume.pdf"
+              className="flex items-center gap-2 bg-white dark:bg-[#111214] border border-[#D4D4D8] dark:border-[#23252A] text-[#0B0B0C] dark:text-[#F5F5F4] px-6 py-3 rounded-full font-medium hover:bg-[#F5F5F4] dark:hover:bg-[#23252A] transition-colors w-fit"
+            >
+              <Download size={18} /> Download
+            </a>
           </div>
         </div>
 

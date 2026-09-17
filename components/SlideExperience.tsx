@@ -10,11 +10,11 @@ const EXPERIENCES = [
     role: 'SDE 2, AI & Data Science',
     company: 'Wappnet Systems',
     location: 'Ahmedabad, India',
-    period: 'Jan 2025 — Present',
+    period: 'Jan 2025 — Jul 2026',
     bullets: [
       'Lead a team of 6–7 AI engineers: plan system architecture from client requirements, conduct code reviews, manage client communication across the full delivery cycle, and drive adoption of AI-assisted development (Claude Code, Codex, GitHub Copilot) across the department.',
       'Deployed voice AI agents for pharmacy clients handling 500+ inbound calls daily: answer general queries, check refill availability, escalate to staff, and act as real-time multilingual mediators on contact-centre calls; reduced reception call volume by 70%.',
-      'Developed an AI frontdesk: businesses connect documents, websites, or Google Places data to a deployable chat widget resolving repetitive queries at point of contact; onboarded 20+ customers on a live voice-enabled plan.',
+      'Owned the AI frontdesk product: businesses connect documents, websites, or Google Places data to a deployable chat widget resolving repetitive queries at point of contact; onboarded 20+ customers on a live voice-enabled plan.',
       'Built maritime routing API for the Finnish government: Contraction Hierarchies on a 50,000+ node graph cut query latency from 2 s to under 100 ms (p99); MVP accepted for patent filing under Finnish regulations.',
     ],
   },

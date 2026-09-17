@@ -6,13 +6,22 @@ import { ExternalLink, Github } from 'lucide-react';
 
 const PROJECTS = [
   {
+    id: 'browser-agent',
+    title: 'browser-agent',
+    description: 'BYOK Chrome extension that acts on the web like a user — streaming agent loop, permission-gated click/type, settings UX, remote MCP, and encrypted vault for keys/OAuth.',
+    stack: ['TypeScript', 'React', 'Chrome MV3', 'MCP'],
+    outcome: 'v0.5.1 on GitHub Releases; act/browse agents, session compaction, CI-built install zip. Built as a product surface, not a notebook.',
+    link: 'https://github.com/dhruvbhavsar0612/browser-agent/releases/latest',
+    github: 'https://github.com/dhruvbhavsar0612/browser-agent'
+  },
+  {
     id: 'teleai',
     title: 'TeleAI Indic',
     description: 'Asymmetric voice AI platform: humans speak, AI responds in real-time with concise written output only. Built on the HCI principle that speech is faster than typing but reading is faster than listening.',
     stack: ['Python', 'FastAPI', 'OpenAI Realtime', 'Twilio', 'React'],
     outcome: 'Live at voice.teleai.tech and chat.teleai.tech with AWS deployment and GitHub Actions CI/CD.',
     link: 'https://teleai.tech',
-    github: 'https://github.com/dhruvbhavsar0612',
+    github: '#',
     youtube: 'Iuzq0llaz78'
   },
   {
@@ -27,9 +36,9 @@ const PROJECTS = [
   {
     id: 'rustlette',
     title: 'rustlette',
-    description: 'Rust reimplementation of the Starlette ASGI framework achieving a 10% improvement in memory and throughput over the Python baseline via zero-cost async abstractions.',
-    stack: ['Rust'],
-    outcome: '10% improvement in memory footprint and throughput compared to the original Python Starlette framework.',
+    description: 'Starlette-inspired ASGI framework; Phase 1 is a pure-Python reimplementation with a path toward Rust acceleration.',
+    stack: ['Python', 'Rust'],
+    outcome: 'Open-source exploration of ASGI internals; Rust acceleration not yet wired — benchmarks TBD.',
     link: '#',
     github: 'https://github.com/dhruvbhavsar0612/rustlette'
   },
@@ -40,7 +49,7 @@ const PROJECTS = [
     stack: ['Python', 'FastAPI', 'GeoPandas', 'NetworkX'],
     outcome: 'Reduced query latency from 2s to <100ms (p99). Successfully completed MVP leading to a patent filing.',
     link: '#',
-    github: 'https://github.com/dhruvbhavsar0612'
+    github: '#'
   },
   {
     id: 'solar-irradiance',
@@ -49,7 +58,7 @@ const PROJECTS = [
     stack: ['PyTorch', 'OpenCV', 'SciPy', 'CUDA'],
     outcome: 'Outperformed baseline ARIMA/SARIMA models by 40% during high-fluctuation weather events.',
     link: 'https://docs.google.com/document/d/1b1HilH_0Ng_UYp0jWPxDoLoTEweULtL-/edit',
-    github: 'https://github.com/dhruvbhavsar0612'
+    github: '#'
   },
   {
     id: 'healthcare-crm',
@@ -58,7 +67,7 @@ const PROJECTS = [
     stack: ['FastAPI', 'Elasticsearch', 'PostgreSQL', 'AWS'],
     outcome: 'Improved matching accuracy by 35% using DBSCAN clustering and fine-tuned embeddings.',
     link: '#',
-    github: 'https://github.com/dhruvbhavsar0612'
+    github: '#'
   }
 ];
 

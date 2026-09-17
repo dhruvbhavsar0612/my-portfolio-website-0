@@ -17,7 +17,7 @@ export default function SlideHome({ onNavigate }: SlideHomeProps) {
               Dhruv<br />Bhavsar
             </h1>
             <p className="text-xl text-[#52525B] dark:text-[#A1A1AA] max-w-md leading-relaxed">
-              AI Engineer specializing in production agentic pipelines, real-time voice AI, and event-driven ML infrastructure.
+              Product-minded software engineer shipping AI user experiences — agents, voice, and browser UX.
             </p>
           </div>
           

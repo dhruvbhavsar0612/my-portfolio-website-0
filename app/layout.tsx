@@ -9,7 +9,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: 'Dhruv Bhavsar - Portfolio',
-  description: 'AI engineer building backend systems and product-first tools.',
+  description: 'Applied AI / product engineer — browser agents, voice AI, React and Python.',
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },

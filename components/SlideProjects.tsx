@@ -1,18 +1,37 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ExternalLink, Github } from 'lucide-react';
+import { ExternalLink, Github, Play, X } from 'lucide-react';
 
-const PROJECTS = [
+type Project = {
+  id: string;
+  title: string;
+  description: string;
+  stack: string[];
+  outcome: string;
+  link: string;
+  github: string;
+  linkLabel?: string;
+  youtube?: string;
+  demoVideo?: string;
+  demoPoster?: string;
+  demoCaption?: string;
+};
+
+const PROJECTS: Project[] = [
   {
     id: 'browser-agent',
     title: 'browser-agent',
     description: 'BYOK Chrome extension that acts on the web like a user — streaming agent loop, permission-gated click/type, settings UX, remote MCP, and encrypted vault for keys/OAuth.',
     stack: ['TypeScript', 'React', 'Chrome MV3', 'MCP'],
-    outcome: 'v0.5.1 on GitHub Releases; act/browse agents, session compaction, CI-built install zip. Built as a product surface, not a notebook.',
+    outcome: 'Launch demo below; v0.5.1 on GitHub Releases with act/browse agents, session compaction, and CI-built install zip. Built as a product surface, not a notebook.',
     link: 'https://github.com/dhruvbhavsar0612/browser-agent/releases/latest',
-    github: 'https://github.com/dhruvbhavsar0612/browser-agent'
+    linkLabel: 'Latest Release',
+    github: 'https://github.com/dhruvbhavsar0612/browser-agent',
+    demoVideo: '/demos/browser-agent-launch.mp4',
+    demoPoster: '/demos/browser-agent-launch-poster.png',
+    demoCaption: 'Launch walkthrough — act & browse agents on the live web'
   },
   {
     id: 'teleai',
@@ -71,6 +90,139 @@ const PROJECTS = [
   }
 ];
 
+function ProjectDemoVideo({
+  src,
+  poster,
+  title,
+  caption,
+}: {
+  src: string;
+  poster?: string;
+  title: string;
+  caption?: string;
+}) {
+  const [modalOpen, setModalOpen] = useState(false);
+  const modalVideoRef = useRef<HTMLVideoElement>(null);
+
+  const closeModal = useCallback(() => {
+    modalVideoRef.current?.pause();
+    setModalOpen(false);
+  }, []);
+
+  useEffect(() => {
+    if (!modalOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeModal();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [modalOpen, closeModal]);
+
+  const videoShellClass =
+    'w-full aspect-video rounded-lg overflow-hidden border border-[#D4D4D8] dark:border-[#23252A] bg-[#0B0B0C] shadow-sm';
+
+  return (
+    <div className="space-y-2 max-w-2xl w-full">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        {caption && (
+          <p className="text-xs text-[#52525B] dark:text-[#A1A1AA] uppercase tracking-wider">{caption}</p>
+        )}
+        <button
+          type="button"
+          onClick={() => setModalOpen(true)}
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-[#52525B] dark:text-[#A1A1AA] hover:text-[#0B0B0C] dark:hover:text-[#F5F5F4] transition-colors self-start sm:self-auto"
+        >
+          <Play size={14} aria-hidden />
+          Expand demo
+        </button>
+      </div>
+
+      {/* Inline preview — native controls; expand opens modal on small viewports */}
+      <div className={`${videoShellClass} hidden sm:block`}>
+        <video
+          className="w-full h-full object-contain"
+          controls
+          playsInline
+          preload="metadata"
+          poster={poster}
+          src={src}
+        />
+      </div>
+
+      <button
+        type="button"
+        onClick={() => setModalOpen(true)}
+        className={`${videoShellClass} sm:hidden relative group text-left`}
+        aria-label={`Watch ${title} demo`}
+      >
+        {poster ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={poster} alt="" className="w-full h-full object-cover opacity-90" />
+        ) : (
+          <div className="w-full h-full bg-[#111214]" />
+        )}
+        <span className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/50 transition-colors">
+          <span className="flex items-center gap-2 rounded-full bg-white/95 dark:bg-[#111214]/95 px-4 py-2 text-sm font-medium text-[#0B0B0C] dark:text-[#F5F5F4] border border-[#D4D4D8] dark:border-[#23252A]">
+            <Play size={16} fill="currentColor" aria-hidden />
+            Watch demo
+          </span>
+        </span>
+      </button>
+
+      <AnimatePresence>
+        {modalOpen && (
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${title} demo`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8 bg-black/80 backdrop-blur-sm"
+            onClick={closeModal}
+          >
+            <motion.div
+              initial={{ scale: 0.96, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.96, opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="relative w-full max-w-4xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                type="button"
+                onClick={closeModal}
+                className="absolute -top-10 right-0 sm:-right-2 flex items-center gap-1 text-sm text-[#F5F5F4] hover:text-white transition-colors"
+                aria-label="Close demo"
+              >
+                <X size={18} aria-hidden />
+                Close
+              </button>
+              <div className={`${videoShellClass} border-[#23252A]`}>
+                <video
+                  ref={modalVideoRef}
+                  className="w-full h-full object-contain"
+                  controls
+                  playsInline
+                  autoPlay
+                  preload="metadata"
+                  poster={poster}
+                  src={src}
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 export default function SlideProjects() {
   const [activeProjectIndex, setActiveProjectIndex] = useState(0);
   const activeProject = PROJECTS[activeProjectIndex];
@@ -117,7 +269,16 @@ export default function SlideProjects() {
               </p>
             </div>
 
-            {'youtube' in activeProject && activeProject.youtube && (
+            {activeProject.demoVideo && (
+              <ProjectDemoVideo
+                src={activeProject.demoVideo}
+                poster={activeProject.demoPoster}
+                title={activeProject.title}
+                caption={activeProject.demoCaption}
+              />
+            )}
+
+            {activeProject.youtube && (
               <div className="max-w-lg w-full aspect-video rounded-lg overflow-hidden border border-[#D4D4D8] dark:border-[#23252A]">
                 <iframe
                   src={`https://www.youtube-nocookie.com/embed/${activeProject.youtube}`}
@@ -148,7 +309,7 @@ export default function SlideProjects() {
             <div className="flex gap-4 pt-4">
               {activeProject.link !== '#' && (
                 <a href={activeProject.link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm font-medium hover:text-[#52525B] dark:hover:text-[#A1A1AA] transition-colors">
-                  <ExternalLink size={16} /> Live Demo
+                  <ExternalLink size={16} /> {activeProject.linkLabel ?? 'Live Demo'}
                 </a>
               )}
               {activeProject.github !== '#' && (

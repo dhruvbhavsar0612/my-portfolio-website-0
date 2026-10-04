@@ -4,10 +4,16 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ExternalLink, Github, Play, X } from 'lucide-react';
 
+type ProjectOrigin = 'personal' | 'experience';
+
 type Project = {
   id: string;
   title: string;
+  origin: ProjectOrigin;
+  /** Where it lived: independent product, or employer and role. */
+  context: string;
   description: string;
+  highlights: string[];
   stack: string[];
   outcome: string;
   link: string;
@@ -19,75 +25,134 @@ type Project = {
   demoCaption?: string;
 };
 
+const ORIGIN_LABEL: Record<ProjectOrigin, string> = {
+  personal: 'Personal',
+  experience: 'From experience',
+};
+
 const PROJECTS: Project[] = [
   {
     id: 'browser-agent',
     title: 'browser-agent',
-    description: 'BYOK Chrome extension that acts on the web like a user — streaming agent loop, permission-gated click/type, settings UX, remote MCP, and encrypted vault for keys/OAuth.',
+    origin: 'personal',
+    context: 'Independent product',
+    description: 'BYOK Chrome extension that acts on the web like a user — a streaming agent loop with permission-gated click and type, settings UX, remote MCP, and an encrypted vault for keys and OAuth.',
+    highlights: [
+      'Bring-your-own-key agent that reads the page and acts only after permission-gated click and type.',
+      'Settings UX, remote MCP, and an encrypted vault for API keys and OAuth.',
+      'Act and browse agents, session compaction, and a CI-built install zip.',
+    ],
     stack: ['TypeScript', 'React', 'Chrome MV3', 'MCP'],
-    outcome: 'Launch demo below; v0.5.1 on GitHub Releases with act/browse agents, session compaction, and CI-built install zip. Built as a product surface, not a notebook.',
+    outcome: 'v0.5.1 on GitHub Releases. Built as a product surface, not a notebook.',
     link: 'https://github.com/dhruvbhavsar0612/browser-agent/releases/latest',
     linkLabel: 'Latest Release',
     github: 'https://github.com/dhruvbhavsar0612/browser-agent',
     demoVideo: '/demos/browser-agent-launch.mp4',
     demoPoster: '/demos/browser-agent-launch-poster.png',
-    demoCaption: 'Launch walkthrough — act & browse agents on the live web'
+    demoCaption: 'Launch walkthrough — act & browse agents on the live web',
   },
   {
     id: 'teleai',
     title: 'TeleAI Indic',
-    description: 'Asymmetric voice AI platform: humans speak, AI responds in real-time with concise written output only. Built on the HCI principle that speech is faster than typing but reading is faster than listening.',
+    origin: 'personal',
+    context: 'Independent product',
+    description: 'Asymmetric voice AI platform: a person speaks, and the model answers in real time with concise written output only.',
+    highlights: [
+      'Speech in, text out — built on the idea that speaking is faster than typing, while reading is faster than listening.',
+      'Separate voice and chat surfaces at voice.teleai.tech and chat.teleai.tech.',
+      'Deployed on AWS with GitHub Actions CI/CD.',
+    ],
     stack: ['Python', 'FastAPI', 'OpenAI Realtime', 'Twilio', 'React'],
-    outcome: 'Live at voice.teleai.tech and chat.teleai.tech with AWS deployment and GitHub Actions CI/CD.',
+    outcome: 'Live voice and chat products, not a local demo.',
     link: 'https://teleai.tech',
     github: '#',
-    youtube: 'Iuzq0llaz78'
+    youtube: 'Iuzq0llaz78',
   },
   {
     id: 'fastapi-smith',
     title: 'fastapi-smith',
-    description: 'Production-ready FastAPI project generator with automated versioned releases to PyPI.',
+    origin: 'personal',
+    context: 'Open source',
+    description: 'CLI that scaffolds a production-ready FastAPI project and ships versioned releases to PyPI.',
+    highlights: [
+      'Generates a FastAPI service with project conventions already in place.',
+      'Release flow publishes versioned packages to PyPI through GitHub Actions.',
+    ],
     stack: ['Python', 'PyPI', 'GitHub Actions'],
-    outcome: 'Open-source CLI tool published on PyPI for scaffolding FastAPI projects with best practices baked in.',
+    outcome: 'Published on PyPI for scaffolding FastAPI projects.',
     link: 'https://pypi.org/project/fastapi-smith/',
-    github: 'https://github.com/dhruvbhavsar0612/fastsql-project-setup'
+    github: 'https://github.com/dhruvbhavsar0612/fastsql-project-setup',
   },
   {
     id: 'rustlette',
     title: 'rustlette',
-    description: 'Starlette-inspired ASGI framework; Phase 1 is a pure-Python reimplementation with a path toward Rust acceleration.',
+    origin: 'personal',
+    context: 'Open source',
+    description: 'Starlette-inspired ASGI framework. Phase 1 is a pure-Python reimplementation, with a later path toward Rust acceleration.',
+    highlights: [
+      'Reimplements the ASGI surface in Python first, so the framework shape is usable before any native code.',
+      'Rust acceleration is planned and not wired yet — benchmarks are still open.',
+    ],
     stack: ['Python', 'Rust'],
-    outcome: 'Open-source exploration of ASGI internals; Rust acceleration not yet wired — benchmarks TBD.',
+    outcome: 'Public exploration of ASGI internals.',
     link: '#',
-    github: 'https://github.com/dhruvbhavsar0612/rustlette'
+    github: 'https://github.com/dhruvbhavsar0612/rustlette',
   },
   {
     id: 'maritime-routing',
     title: 'Maritime Routing Engine',
-    description: 'High-performance navigation solution calculating optimal sea routes on a 50,000+ node graph using Contraction Hierarchies and Dijkstra\'s algorithm.',
+    origin: 'experience',
+    context: 'Wappnet Systems · SDE 2, AI & Data Science',
+    description: 'Navigation API that computes optimal sea routes on a 50,000+ node graph for the Finnish government.',
+    highlights: [
+      'Contraction Hierarchies and Dijkstra over a 50,000+ node maritime graph.',
+      'Shipped as an API while leading AI engineering at Wappnet Systems.',
+      'MVP completed and accepted for patent filing under Finnish regulations.',
+    ],
     stack: ['Python', 'FastAPI', 'GeoPandas', 'NetworkX'],
-    outcome: 'Reduced query latency from 2s to <100ms (p99). Successfully completed MVP leading to a patent filing.',
+    outcome: 'Query latency from 2s to under 100ms (p99).',
     link: '#',
-    github: '#'
+    github: '#',
   },
   {
     id: 'solar-irradiance',
     title: 'Solar Irradiance Forecasting',
-    description: 'Hybrid LSTM+CNN architecture to forecast solar events using 200GB+ of multi-sensor satellite raster data for the Indian Space Research Organisation (ISRO).',
+    origin: 'experience',
+    context: 'ISRO · Research Intern · Oct 2023 — Jan 2024',
+    description: 'LSTM+CNN forecast of solar insolation from multi-sensor satellite archives at the Indian Space Research Organisation.',
+    highlights: [
+      'Hybrid model trained on 23 satellite sensor instruments.',
+      'ETL over 200GB+ of raster archives, plus a continuous retraining pipeline on NVIDIA CuDNN.',
+      'Production updates ran without manual intervention once the pipeline was in place.',
+    ],
     stack: ['PyTorch', 'OpenCV', 'SciPy', 'CUDA'],
-    outcome: 'Outperformed baseline ARIMA/SARIMA models by 40% during high-fluctuation weather events.',
+    outcome: 'Beat ARIMA/SARIMA baselines by 40% in high-fluctuation weather.',
     link: 'https://docs.google.com/document/d/1b1HilH_0Ng_UYp0jWPxDoLoTEweULtL-/edit',
-    github: '#'
+    linkLabel: 'Write-up',
+    github: '#',
   },
   {
     id: 'healthcare-crm',
     title: 'Healthcare CRM AI Copilot',
-    description: 'Recommendation engine and RAG-based AI assistant enabling natural language queries across healthcare databases.',
+    origin: 'experience',
+    context: 'Wappnet Systems · nolea.ai',
+    description: 'Healthcare CRM copilot: a recommendation engine and a RAG assistant for natural-language questions over the database.',
+    highlights: [
+      'As AI Engineer, shipped nolea.ai: fine-tuned embeddings and GPU-accelerated collaborative filtering on Elasticsearch, plus a RAG assistant.',
+      'As Data Engineering Intern on the same domain, built 53 Airflow DAGs into production-ready profiles and the team’s first RAG over people profiles.',
+      'DBSCAN geographic clustering for daily recommendations improved match accuracy by 35%.',
+    ],
     stack: ['FastAPI', 'Elasticsearch', 'PostgreSQL', 'AWS'],
-    outcome: 'Improved matching accuracy by 35% using DBSCAN clustering and fine-tuned embeddings.',
+    outcome: 'Matching accuracy up 35%, with a live copilot for natural-language queries.',
     link: '#',
-    github: '#'
-  }
+    github: '#',
+  },
+];
+
+const FILTERS: { id: 'all' | ProjectOrigin; label: string }[] = [
+  { id: 'all', label: 'All' },
+  { id: 'personal', label: 'Personal' },
+  { id: 'experience', label: 'From experience' },
 ];
 
 function ProjectDemoVideo({
@@ -224,35 +289,93 @@ function ProjectDemoVideo({
 }
 
 export default function SlideProjects() {
-  const [activeProjectIndex, setActiveProjectIndex] = useState(0);
-  const activeProject = PROJECTS[activeProjectIndex];
+  const [filter, setFilter] = useState<(typeof FILTERS)[number]['id']>('all');
+  const [activeId, setActiveId] = useState(PROJECTS[0].id);
+
+  const visibleProjects = PROJECTS.filter((project) => filter === 'all' || project.origin === filter);
+  const activeProject = visibleProjects.find((project) => project.id === activeId) ?? visibleProjects[0];
+
+  const selectFilter = (next: (typeof FILTERS)[number]['id']) => {
+    setFilter(next);
+    const visible = PROJECTS.filter((project) => next === 'all' || project.origin === next);
+    if (!visible.some((project) => project.id === activeId) && visible[0]) {
+      setActiveId(visible[0].id);
+    }
+  };
+
+  const groups: { key: string; label: string; items: Project[] }[] =
+    filter === 'all'
+      ? [
+          { key: 'personal', label: 'Personal', items: visibleProjects.filter((project) => project.origin === 'personal') },
+          { key: 'experience', label: 'From experience', items: visibleProjects.filter((project) => project.origin === 'experience') },
+        ]
+      : [{ key: filter, label: ORIGIN_LABEL[filter], items: visibleProjects }];
 
   return (
-    <div className="w-full h-full flex flex-col md:flex-row gap-8 py-8">
+    <div className="w-full h-full flex flex-col md:flex-row gap-6 md:gap-8 py-8">
       {/* Left Rail - Project List */}
-      <div className="w-full md:w-1/3 flex flex-row md:flex-col gap-3 md:gap-2 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory md:snap-none md:border-r border-[#D4D4D8] dark:border-[#23252A] pb-4 md:pb-0 md:pr-6 shrink-0">
-        <h2 className="hidden md:block text-sm font-bold tracking-widest text-[#52525B] dark:text-[#A1A1AA] uppercase mb-4">Featured Work</h2>
-        {PROJECTS.map((project, index) => {
-          const isActive = index === activeProjectIndex;
-          return (
-            <button
-              key={project.id}
-              onClick={() => setActiveProjectIndex(index)}
-              className={`text-left px-4 py-3 md:py-4 rounded-lg transition-all shrink-0 snap-start w-[75vw] md:w-auto ${
-                isActive 
-                  ? 'bg-white dark:bg-[#111214] border border-[#D4D4D8] dark:border-[#23252A] text-[#0B0B0C] dark:text-[#F5F5F4]' 
-                  : 'text-[#52525B] dark:text-[#A1A1AA] hover:text-[#0B0B0C] dark:hover:text-[#F5F5F4] hover:bg-white/50 dark:hover:bg-[#111214]/50 border border-transparent'
-              }`}
-            >
-              <div className="text-xs mb-1 opacity-60">0{index + 1}</div>
-              <div className="font-medium whitespace-nowrap">{project.title}</div>
-            </button>
-          );
-        })}
+      <div className="w-full md:w-[34%] md:sticky md:top-0 md:self-start md:max-h-full md:overflow-y-auto flex flex-col gap-4 md:border-r border-[#D4D4D8] dark:border-[#23252A] pb-2 md:pb-0 md:pr-6 shrink-0">
+        <div className="space-y-3">
+          <h2 className="hidden md:block text-sm font-bold tracking-widest text-[#52525B] dark:text-[#A1A1AA] uppercase">Projects</h2>
+          <p className="hidden md:block text-xs leading-relaxed text-[#52525B] dark:text-[#A1A1AA]">
+            Personal is work I own — products and open source. From experience is work shipped at Wappnet and ISRO.
+          </p>
+          <div className="flex gap-2 overflow-x-auto" role="tablist" aria-label="Filter projects">
+            {FILTERS.map((item) => {
+              const selected = filter === item.id;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={selected}
+                  onClick={() => selectFilter(item.id)}
+                  className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+                    selected
+                      ? 'bg-[#0B0B0C] dark:bg-[#F5F5F4] text-[#F5F5F4] dark:text-[#0B0B0C] border-transparent'
+                      : 'bg-white dark:bg-[#111214] border-[#D4D4D8] dark:border-[#23252A] text-[#52525B] dark:text-[#A1A1AA] hover:text-[#0B0B0C] dark:hover:text-[#F5F5F4]'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="flex flex-row md:flex-col gap-3 md:gap-4 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory md:snap-none">
+          {groups.map((group) => (
+            <div key={group.key} className="contents md:flex md:flex-col md:gap-2">
+              <div className="shrink-0 self-center md:self-auto text-[11px] font-bold tracking-widest uppercase text-[#52525B] dark:text-[#A1A1AA] px-1 md:px-1 md:pt-1">
+                {group.label}
+              </div>
+              {group.items.map((project) => {
+                const index = PROJECTS.findIndex((item) => item.id === project.id);
+                const isActive = project.id === activeProject.id;
+                return (
+                  <button
+                    key={project.id}
+                    type="button"
+                    onClick={() => setActiveId(project.id)}
+                    className={`text-left px-4 py-3 md:py-3.5 rounded-lg transition-all shrink-0 snap-start w-[75vw] md:w-auto ${
+                      isActive
+                        ? 'bg-white dark:bg-[#111214] border border-[#D4D4D8] dark:border-[#23252A] text-[#0B0B0C] dark:text-[#F5F5F4]'
+                        : 'text-[#52525B] dark:text-[#A1A1AA] hover:text-[#0B0B0C] dark:hover:text-[#F5F5F4] hover:bg-white/50 dark:hover:bg-[#111214]/50 border border-transparent'
+                    }`}
+                  >
+                    <div className="text-xs mb-1 opacity-60">0{index + 1}</div>
+                    <div className="font-medium whitespace-nowrap md:whitespace-normal">{project.title}</div>
+                    <div className="text-xs mt-1 opacity-70 whitespace-nowrap md:whitespace-normal">{project.context}</div>
+                  </button>
+                );
+              })}
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Main Panel - Project Details */}
-      <div className="w-full md:w-2/3 flex flex-col justify-start relative min-h-[400px]">
+      <div className="w-full md:flex-1 flex flex-col justify-start relative min-h-[400px]">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeProject.id}
@@ -260,14 +383,35 @@ export default function SlideProjects() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="flex flex-col space-y-8"
+            className="flex flex-col space-y-6"
           >
             <div>
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-3">
+                <span
+                  className={`text-[11px] font-semibold tracking-widest uppercase px-2.5 py-1 rounded-full border ${
+                    activeProject.origin === 'personal'
+                      ? 'border-[#0B0B0C] dark:border-[#F5F5F4] text-[#0B0B0C] dark:text-[#F5F5F4]'
+                      : 'border-[#D4D4D8] dark:border-[#23252A] bg-white dark:bg-[#111214] text-[#52525B] dark:text-[#A1A1AA]'
+                  }`}
+                >
+                  {ORIGIN_LABEL[activeProject.origin]}
+                </span>
+                <span className="text-sm text-[#52525B] dark:text-[#A1A1AA]">{activeProject.context}</span>
+              </div>
               <h3 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">{activeProject.title}</h3>
               <p className="text-lg text-[#52525B] dark:text-[#A1A1AA] leading-relaxed max-w-2xl">
                 {activeProject.description}
               </p>
             </div>
+
+            <ul className="space-y-3 max-w-2xl">
+              {activeProject.highlights.map((highlight) => (
+                <li key={highlight} className="flex gap-3 text-sm leading-relaxed">
+                  <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#52525B] dark:bg-[#A1A1AA] shrink-0" />
+                  <span>{highlight}</span>
+                </li>
+              ))}
+            </ul>
 
             {activeProject.demoVideo && (
               <ProjectDemoVideo
@@ -291,12 +435,14 @@ export default function SlideProjects() {
               </div>
             )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 border-t border-[#D4D4D8] dark:border-[#23252A] pt-8">
-              <div className="space-y-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 border-t border-[#D4D4D8] dark:border-[#23252A] pt-6">
+              <div className="space-y-3">
                 <div className="text-xs text-[#52525B] dark:text-[#A1A1AA] uppercase tracking-wider">Stack</div>
                 <div className="flex flex-wrap gap-2">
                   {activeProject.stack.map(tech => (
-                    <span key={tech} className="text-sm">{tech}</span>
+                    <span key={tech} className="px-2.5 py-1 bg-white dark:bg-[#111214] border border-[#D4D4D8] dark:border-[#23252A] rounded-md text-sm">
+                      {tech}
+                    </span>
                   ))}
                 </div>
               </div>

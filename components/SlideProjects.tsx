@@ -38,8 +38,8 @@ const PROJECTS: Project[] = [
     title: 'TeleAI Indic',
     description: 'Asymmetric voice AI platform: humans speak, AI responds in real-time with concise written output only. Built on the HCI principle that speech is faster than typing but reading is faster than listening.',
     stack: ['Python', 'FastAPI', 'OpenAI Realtime', 'Twilio', 'React'],
-    outcome: 'Live at voice.teleai.tech and chat.teleai.tech with AWS deployment and GitHub Actions CI/CD.',
-    link: 'https://teleai.tech',
+    outcome: 'Live at voice.teleai.live with AWS deployment and GitHub Actions CI/CD.',
+    link: 'https://teleai.live',
     github: '#',
     youtube: 'Iuzq0llaz78'
   },
